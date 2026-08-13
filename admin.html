@@ -134,13 +134,19 @@
 
     // --- Dashboard Logic ---
     async function loadDashboardData() {
-      let participants = [];
-      if (supabase) {
-        const { data, error } = await supabase.from('participants').select('*').order('registeredAt', { ascending: true });
-        if (!error && data) participants = data;
-      } else {
-        participants = JSON.parse(localStorage.getItem('gno_participants') || '[]');
-      }
+      try {
+        let participants = [];
+        if (typeof supabase !== 'undefined' && supabase) {
+          const { data, error } = await supabase.from('participants').select('*').order('registeredAt', { ascending: true });
+          if (error) {
+             console.error("Supabase Error:", error);
+             document.getElementById('kpiContainer').innerHTML = `<div style="color:red; padding:1rem; background:rgba(255,0,0,0.1); border:1px solid red;">Supabase Error: ${error.message}</div>`;
+             return;
+          }
+          if (data) participants = data;
+        } else {
+          participants = JSON.parse(localStorage.getItem('gno_participants') || '[]');
+        }
       
       const kpiContainer = document.getElementById('kpiContainer');
       const tableBody = document.getElementById('participantsTableBody');
@@ -205,7 +211,11 @@
             </td>
           </tr>
         `}).join('');
-        lucide.createIcons();
+        if (window.lucide) lucide.createIcons();
+      }
+      } catch (err) {
+        document.getElementById('kpiContainer').innerHTML = `<div style="color:red; padding:1rem; background:rgba(255,0,0,0.1); border:1px solid red;">JS Error: ${err.message}</div>`;
+        console.error(err);
       }
     }
 
