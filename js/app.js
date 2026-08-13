@@ -6,7 +6,7 @@ const TARGET_DATE = new Date('2026-08-14T20:00:00+07:00').getTime();
 // --- Supabase Config ---
 const SUPABASE_URL = 'https://kfvkmksksbignydwlawe.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_yG1jjzbaVC6soXhwLLb-uw_XA3pxC13';
-const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
 /* ---------- Nebula particle background ---------- */
 function initNebulaBg() {
@@ -285,8 +285,8 @@ function initForm() {
       status: 'Pending'
     };
     
-    if (supabase) {
-      supabase.from('participants').insert([newEntry]).then(({ error }) => {
+    if (supabaseClient) {
+      supabaseClient.from('participants').insert([newEntry]).then(({ error }) => {
         submitBtn.innerHTML = originalBtnContent;
         submitBtn.disabled = false;
         
@@ -330,8 +330,8 @@ function initForm() {
 
 async function updateSlotCount() {
   let count = 0;
-  if (supabase) {
-    const { count: sbCount, error } = await supabase.from('participants').select('*', { count: 'exact', head: true });
+  if (supabaseClient) {
+    const { count: sbCount, error } = await supabaseClient.from('participants').select('*', { count: 'exact', head: true });
     if (!error) count = sbCount;
   } else {
     const participants = JSON.parse(localStorage.getItem('gno_participants') || '[]');
