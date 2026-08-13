@@ -300,6 +300,11 @@ function initForm() {
         document.getElementById('successModal').classList.add('active');
         fireConfetti();
         form.reset();
+      }).catch(err => {
+        submitBtn.innerHTML = originalBtnContent;
+        submitBtn.disabled = false;
+        console.error("Fetch/Network Error:", err);
+        alert('Terjadi kesalahan jaringan. Silakan periksa koneksi Anda dan coba lagi.');
       });
     } else {
       // Fallback local if supabase fails to load
