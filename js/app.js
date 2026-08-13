@@ -1,5 +1,5 @@
 /* =========================================================
-   Nebula Arena Prototype — Interactions
+   Nebula Arena — Interactions
    ========================================================= */
 
 const TARGET_DATE = new Date('2026-08-13T21:00:00+07:00').getTime();
