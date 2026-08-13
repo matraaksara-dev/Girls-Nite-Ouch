@@ -392,7 +392,7 @@ function initRaffle() {
 }
 
 /* ---------- Init ---------- */
-window.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
   initNebulaBg();
   initNav();
   startCountdown();
