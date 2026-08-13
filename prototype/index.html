@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#08030F">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta property="og:image" content="assets/og-image.jpg">
+  <title>Girls Nite Ouch! — Nebula Arena Prototype</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Lilita+One&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <canvas id="nebula-bg"></canvas>
+
+  <!-- ========== NAV ========== -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#" class="nav-logo" aria-label="Black Mamba Home">
+        <img src="assets/logo-black-mamba.png" alt="Black Mamba Logo" class="logo-img">
+        <span class="font-display logo-text">BLACK MAMBA</span>
+      </a>
+
+      <div class="nav-links-desktop">
+        <a href="#hero" class="active">Beranda</a>
+        <a href="#cara">Cara Daftar</a>
+        <a href="#jadwal">Jadwal</a>
+        <a href="rules.html">Rules</a>
+        <a href="#form-demo">Daftar</a>
+      </div>
+
+      <div class="nav-badge font-mono">
+        <i data-lucide="swords" style="width:14px;height:14px;"></i> BMA ARENA
+      </div>
+
+      <button class="hamburger" id="hamburgerBtn" aria-label="Buka menu" aria-expanded="false" aria-controls="navOverlay">
+        <i data-lucide="menu" id="menuIcon" style="width:22px;height:22px;"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Full-screen mobile menu -->
+  <div class="nav-overlay" id="navOverlay" role="dialog" aria-modal="true" aria-label="Menu navigasi">
+    <a href="#hero" data-nav>Beranda</a>
+    <a href="#cara" data-nav>Cara Daftar</a>
+    <a href="#jadwal" data-nav>Jadwal</a>
+    <a href="rules.html" data-nav>Rules</a>
+    <a href="#form-demo" data-nav>Daftar</a>
+    <button class="btn btn-primary" style="margin-top:1.5rem;" data-nav onclick="document.getElementById('navOverlay').classList.remove('open')">
+      Daftar Sekarang
+    </button>
+  </div>
+
+  <main>
+    <!-- ========== HERO ========== -->
+    <section class="hero container" id="hero">
+      <img src="assets/hero-character.png" alt="Hero Character" class="hero-character">
+      <div class="hero-badge">
+        <span>⚡</span> PENDAFTARAN DIBUKA!
+      </div>
+      <h1 class="font-event">GIRLS NITE OUCH!</h1>
+      <h2 class="font-display">by BLACK MAMBA COMMUNITY</h2>
+      <p class="hero-desc">Turnamen 1v1 Dueling Ground — Khusus Player Wanita. Slot terbatas. Verifikasi VC wajib.</p>
+
+      <div class="countdown-wrapper" id="countdown" aria-label="Countdown penutupan pendaftaran">
+        <div class="flip-card">
+          <span class="time" id="cd-days">00</span>
+          <span class="label">Hari</span>
+        </div>
+        <div class="flip-card">
+          <span class="time" id="cd-hours">00</span>
+          <span class="label">Jam</span>
+        </div>
+        <div class="flip-card">
+          <span class="time" id="cd-mins">00</span>
+          <span class="label">Menit</span>
+        </div>
+        <div class="flip-card">
+          <span class="time" id="cd-secs">00</span>
+          <span class="label">Detik</span>
+        </div>
+      </div>
+
+      <div class="hero-cta-group">
+        <a href="#form-demo" class="btn btn-primary">
+          <i data-lucide="zap" style="width:18px;height:18px;"></i>
+          Daftar Sekarang
+        </a>
+        <a href="#jadwal" class="btn btn-outline">Lihat Rules & Jadwal</a>
+      </div>
+
+      <div class="sponsor-wrap">
+        <span class="sponsor-label font-mono">SUPPORTED BY</span>
+        <img src="assets/logo-sponsor.png" alt="Sponsor" class="sponsor-logo">
+      </div>
+    </section>
+
+    <div class="scale-trail"></div>
+
+    <!-- ========== CARA DAFTAR ========== -->
+    <section class="section container reveal" id="cara">
+      <h2 class="font-display section-title">CARA DAFTAR</h2>
+      <div class="steps-grid">
+        <article class="glass-card step-card">
+          <span class="step-num">1</span>
+          <div class="icon-wrap"><i data-lucide="file-text" style="width:40px;height:40px;"></i></div>
+          <h3 class="font-display">Isi Form</h3>
+          <p>Lengkapi data diri, Roblox ID, Discord & WhatsApp di form resmi.</p>
+        </article>
+        <article class="glass-card step-card">
+          <span class="step-num">2</span>
+          <div class="icon-wrap"><i data-lucide="mic" style="width:40px;height:40px;"></i></div>
+          <h3 class="font-display">Verifikasi VC</h3>
+          <p>Siap voice call di Discord BMA saat TM untuk anti-hode.</p>
+        </article>
+        <article class="glass-card step-card">
+          <span class="step-num">3</span>
+          <div class="icon-wrap"><i data-lucide="dices" style="width:40px;height:40px;"></i></div>
+          <h3 class="font-display">Tunggu Undian</h3>
+          <p>8 slot utama + cadangan diundi acak. Pantau pengumuman.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========== JADWAL ========== -->
+    <section class="section container reveal" id="jadwal">
+      <h2 class="font-display section-title">JADWAL RESMI</h2>
+      <div class="glass-card" style="max-width:520px;margin:0 auto;">
+        <ul class="timeline-list">
+          <li class="timeline-item">
+            <div class="tl-label">Pendaftaran Dibuka</div>
+            <div class="tl-time font-mono">12 Agt 2026 · 21.00 WIB</div>
+          </li>
+          <li class="timeline-item active">
+            <div class="tl-label">Pendaftaran Ditutup</div>
+            <div class="tl-time font-mono">14 Agt 2026 · 20.00 WIB</div>
+          </li>
+          <li class="timeline-item">
+            <div class="tl-label">Pengundian & Pengumuman</div>
+            <div class="tl-time font-mono">14 Agt 2026 · 21.00 WIB</div>
+          </li>
+          <li class="timeline-item">
+            <div class="tl-label">Technical Meeting</div>
+            <div class="tl-time font-mono">14 - 15 Agt 2026 · di Discord Server Black Mamba Arena</div>
+          </li>
+          <li class="timeline-item">
+            <div class="tl-label">Match Day</div>
+            <div class="tl-time font-mono">15 Agt 2026 · 21.00 WIB – selesai</div>
+          </li>
+        </ul>
+      </div>
+
+      <div style="text-align:center;margin-top:2rem;" class="reveal">
+        <ul class="rules-bullets" style="max-width:480px;margin:0 auto 1.5rem;text-align:left;">
+          <li>Format 1v1 Dueling Ground, max 8 player utama</li>
+          <li>Wajib verifikasi Voice Call (wanita only)</li>
+          <li>Senjata di-ban sesuai voting Discord</li>
+          <li>Keputusan panitia bersifat mutlak</li>
+        </ul>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+          <a href="rules.html" class="btn btn-ghost" style="border: 1px solid var(--neon-glow);"><i data-lucide="book-open" style="width: 16px; height: 16px;"></i> Baca Rules Lengkap</a>
+          <a href="#form-demo" class="btn btn-primary">Saya paham → Daftar</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="scale-trail"></div>
+
+    <!-- ========== FORM DEMO ========== -->
+    <section class="section container reveal" id="form-demo">
+      <div class="form-header">
+        <h2 class="font-event text-pink" style="font-size:clamp(1.8rem,6vw,2.8rem);">Daftar Girls Nite Ouch!</h2>
+        <div style="margin-top: 0.5rem; text-align: center; font-size: 0.95rem;">
+          <span style="color: var(--ghost-white);">Wajib Follow:</span>
+          <a href="https://www.tiktok.com/@blackmamba_official99" target="_blank" rel="noopener noreferrer" style="color: var(--ouch-pink); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 0.25rem;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+            TikTok Black Mamba
+          </a>
+        </div>
+        <div style="text-align: center; margin-top: 0.75rem;">
+          <a href="rules.html" class="btn btn-ghost" style="border: 1px solid var(--neon-glow); padding: 0.4rem 1rem; font-size: 0.85rem;"><i data-lucide="book-open" style="width: 14px; height: 14px;"></i> Baca Rules</a>
+        </div>
+      </div>
+
+      <form id="demoForm" class="glass-card" style="max-width:520px;margin:0 auto;" novalidate>
+
+        <div class="form-group">
+          <label for="roblox">Username / Display name Roblox *</label>
+          <input type="text" id="roblox" name="robloxUsername" class="form-control" placeholder="contoh: MambaQueen_99" required>
+          <div class="error-msg" data-for="robloxUsername">Roblox Display Name wajib diisi</div>
+        </div>
+
+        <div class="form-group">
+          <label for="robloxId">Roblox name ID *</label>
+          <input type="text" id="robloxId" name="robloxId" class="form-control" placeholder="Contoh: @chika_lala99" required>
+          <div class="error-msg" data-for="robloxId">Roblox ID wajib diisi</div>
+        </div>
+
+        <div class="form-group">
+          <label for="discord">ID / Username Discord *</label>
+          <input type="text" id="discord" name="discordId" class="form-control" placeholder="username atau ID" required>
+          <div class="error-msg" data-for="discordId">Discord wajib diisi</div>
+        </div>
+
+
+        <div class="form-group">
+          <label for="tiktok">Link atau Username TikTok *</label>
+          <input type="text" id="tiktok" name="tiktokLink" class="form-control" placeholder="contoh: @username atau https://tiktok.com/@..." required>
+          <div class="error-msg" data-for="tiktokLink">TikTok wajib diisi</div>
+        </div>
+
+        <div class="form-group">
+          <div class="checkbox-group">
+            <input type="checkbox" name="tiktokFollowConsent" id="tiktokCheck" required>
+            <label for="tiktokCheck" style="font-weight:400;font-size:0.9rem;">
+              Saya telah mengikuti (follow) akun TikTok Black Mamba. Saya bersedia didiskualifikasi jika terbukti belum follow. *
+            </label>
+          </div>
+          <div class="error-msg" data-for="tiktokFollowConsent" style="margin-left:30px;">Wajib follow TikTok</div>
+        </div>
+
+        <div class="form-group">
+          <div class="checkbox-group">
+            <input type="checkbox" name="genderVerificationConsent" id="vcCheck" required>
+            <label for="vcCheck" style="font-weight:400;font-size:0.9rem;">
+              Saya player wanita & bersedia verifikasi Voice Call (VC) sesuai ketentuan *
+            </label>
+          </div>
+          <div class="error-msg" data-for="genderVerificationConsent" style="margin-left:30px;">Wajib setuju verifikasi</div>
+        </div>
+
+        <div class="form-group">
+          <div class="checkbox-group">
+            <input type="checkbox" name="rulesAgreement" id="rulesCheck" required>
+            <label for="rulesCheck" style="font-weight:400;font-size:0.9rem;">
+              Saya sudah baca & setuju seluruh Rules Turnamen *
+            </label>
+          </div>
+          <div class="error-msg" data-for="rulesAgreement" style="margin-left:30px;">Wajib setuju rules</div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full" id="submitBtn">
+          Kirim Pendaftaran 🐍
+        </button>
+      </form>
+    </section>
+
+
+    <footer style="text-align:center;padding:2.5rem 1rem 5rem;color:var(--muted-lilac);font-size:0.8rem;">
+      <div class="footer-logos">
+        <img src="assets/logo-bm-arena.png" alt="Black Mamba Arena" class="footer-logo">
+        <img src="assets/logo-sponsor.png" alt="Sponsor" class="footer-logo">
+      </div>
+      <p class="font-mono" style="margin-bottom: 0.5rem;">Copyright by: Black Mamba Community</p>
+      <a href="admin.html" style="color: var(--muted-lilac); text-decoration: none; font-size: 0.75rem; opacity: 0.5;"><i data-lucide="shield" style="width:12px;height:12px;display:inline-block;vertical-align:middle;"></i> Admin Login</a>
+    </footer>
+  </main>
+
+  <!-- Mobile sticky CTA -->
+  <div class="mobile-sticky-cta" id="stickyCta">
+    <a href="#form-demo" class="btn btn-primary">Daftar Sekarang</a>
+  </div>
+
+  <!-- Success Modal -->
+  <div class="modal-overlay" id="successModal" role="dialog" aria-labelledby="modalTitle">
+    <div class="modal-content">
+      <span class="modal-sticker" id="modalTitle">OUCH! TERKIRIM!</span>
+      <p class="text-muted">Kamu resmi masuk daftar tunggu undian 🐍</p>
+      <button class="btn btn-primary" style="margin-top:1.5rem;" onclick="closeModal()">Kembali</button>
+    </div>
+  </div>
+
+  <script src="js/prototype.js"></script>
+</body>
+</html>

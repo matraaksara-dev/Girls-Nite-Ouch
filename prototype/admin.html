@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Admin Dashboard - Girls Nite Ouch!</title>
+  
+  <meta name="theme-color" content="#1C0F3D">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Lilita+One&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Login Gate -->
+  <div id="loginOverlay" class="admin-login-overlay">
+    <div class="admin-login-box">
+      <img src="assets/logo-black-mamba.png" alt="Black Mamba Logo" style="width: 80px; margin-bottom: 1rem; filter: drop-shadow(0 0 10px rgba(177,78,255,0.5));">
+      <h2 class="font-display" style="font-size: 1.5rem; margin-bottom: 0.5rem;">RESTRICTED AREA</h2>
+      <p class="text-muted font-mono" style="margin-bottom: 1.5rem; font-size: 0.85rem;">Authentication required.</p>
+      
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group" style="text-align: left;">
+          <input type="password" id="adminPassword" class="form-control" placeholder="Enter Passcode..." required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">
+          ACCESS DASHBOARD
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <canvas id="nebula-bg"></canvas>
+
+  <!-- ========== NAV ========== -->
+  <nav>
+    <div class="nav-inner" style="max-width: 1400px;">
+      <a href="index.html" class="nav-logo" aria-label="Kembali ke Beranda">
+        <img src="assets/logo-black-mamba.png" alt="Black Mamba Logo" class="logo-img">
+        <span class="font-display logo-text" style="font-size: 1rem;">KEMBALI KE HOME</span>
+      </a>
+
+      <div class="nav-badge font-mono">
+        <i data-lucide="shield" style="width:14px;height:14px;"></i> ADMIN PANEL
+      </div>
+    </div>
+  </nav>
+
+  <main style="min-height: calc(100vh - 200px); display: none;" id="mainContent">
+    <section class="section" style="padding: 3rem 2rem; max-width: 1400px; margin: 0 auto;">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:1.5rem;">
+        <div>
+          <h1 class="font-display" style="font-size:var(--fs-h2);">DASHBOARD KURASI PENDAFTAR</h1>
+          <p class="text-muted font-mono" style="font-size:0.85rem;">Desktop-Optimized Table View</p>
+        </div>
+        <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+          <button class="btn btn-ghost" style="padding:0.5rem 1rem;font-size:0.8rem;" onclick="exportJSON()">
+            <i data-lucide="download" style="width:16px;height:16px;"></i> Download JSON
+          </button>
+          <button class="btn btn-ghost" style="padding:0.5rem 1rem;font-size:0.8rem; border-color: rgba(255,59,59,0.4); color: #ff3b3b;" onclick="clearData()">
+            <i data-lucide="trash-2" style="width:16px;height:16px;"></i> Hapus Semua Data
+          </button>
+          <button class="btn btn-primary" style="padding:0.5rem 1.5rem;font-size:0.9rem;" id="raffleBtn">
+            <i data-lucide="dices" style="width:18px;height:18px;"></i> Undi 8 Slot
+          </button>
+        </div>
+      </div>
+
+      <div class="kpi-row" id="kpiContainer" style="margin-bottom: 2rem;">
+        <!-- KPI Cards will be generated here -->
+      </div>
+
+      <div class="table-responsive">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Waktu</th>
+              <th>Roblox Display</th>
+              <th>Roblox ID</th>
+              <th>Discord ID</th>
+              <th>TikTok</th>
+              <th style="width: 160px;">Status</th>
+            </tr>
+          </thead>
+          <tbody id="participantsTableBody">
+            <!-- Table rows will be generated here -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer style="text-align:center;padding:2rem 1rem 3rem;color:var(--muted-lilac);font-size:0.8rem; display: none;" id="footerContent">
+    <div class="footer-logos">
+      <img src="assets/logo-bm-arena.png" alt="Black Mamba Arena" class="footer-logo">
+    </div>
+    <p class="font-mono">Copyright by: Black Mamba Community</p>
+  </footer>
+
+  <script src="js/prototype.js"></script>
+  <script>
+    // --- Login Gate Logic ---
+    const correctPasscode = 'MAMBA2026';
+    
+    function checkAuth() {
+      if(sessionStorage.getItem('gno_admin_auth') === 'true') {
+        document.getElementById('loginOverlay').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+        document.getElementById('footerContent').style.display = 'block';
+        loadDashboardData();
+        lucide.createIcons();
+      }
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const pass = document.getElementById('adminPassword').value;
+      if (pass === correctPasscode) {
+        sessionStorage.setItem('gno_admin_auth', 'true');
+        checkAuth();
+      } else {
+        alert('Passcode salah!');
+      }
+    }
+
+    window.addEventListener('load', checkAuth);
+
+    // --- Dashboard Logic ---
+    function loadDashboardData() {
+      const participants = JSON.parse(localStorage.getItem('gno_participants') || '[]');
+      
+      const kpiContainer = document.getElementById('kpiContainer');
+      const tableBody = document.getElementById('participantsTableBody');
+      
+      let total = participants.length;
+      let pending = participants.filter(p => p.status === 'Pending').length;
+      let lolosVerif = participants.filter(p => p.status === 'Lolos Verif').length;
+      let utama = participants.filter(p => p.status === 'Utama').length;
+
+      kpiContainer.innerHTML = `
+        <div class="glass-card kpi-card">
+          <div class="kpi-value">${total}</div>
+          <div class="kpi-label">Total Masuk</div>
+        </div>
+        <div class="glass-card kpi-card">
+          <div class="kpi-value" style="color:var(--muted-lilac);">${pending}</div>
+          <div class="kpi-label">Pending / Unchecked</div>
+        </div>
+        <div class="glass-card kpi-card">
+          <div class="kpi-value" style="color:#00ff80;">${lolosVerif}</div>
+          <div class="kpi-label">Lolos Verif (Siap Undi)</div>
+        </div>
+        <div class="glass-card kpi-card">
+          <div class="kpi-value" style="color:var(--neon-glow);">${utama} / 8</div>
+          <div class="kpi-label">Slot Utama</div>
+        </div>
+      `;
+
+      if (total === 0) {
+        tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 3rem; color: var(--muted-lilac);">Belum ada data pendaftar.</td></tr>';
+      } else {
+        tableBody.innerHTML = participants.map((p, index) => {
+          const date = new Date(p.timestamp || Date.now());
+          const timeStr = date.toLocaleTimeString('id-ID', { hour: '2-digit', minute:'2-digit' });
+          const dateStr = date.toLocaleDateString('id-ID', { day: '2-digit', month:'short' });
+          
+          let rowStyle = '';
+          if (p.status === 'DQ') rowStyle = 'opacity: 0.5;';
+          if (p.status === 'Utama') rowStyle = 'background: rgba(177, 78, 255, 0.08); border-left: 2px solid var(--neon-glow);';
+
+          let statusPillClass = p.status.toLowerCase().replace(' ', '-');
+
+          return `
+          <tr style="${rowStyle}">
+            <td class="font-mono text-muted" style="font-size: 0.8rem;">${dateStr}<br>${timeStr}</td>
+            <td style="font-weight: 600;">${escapeHtml(p.robloxUsername)}</td>
+            <td class="font-mono text-muted" style="font-size: 0.85rem;">${escapeHtml(p.robloxId)}</td>
+            <td class="font-mono">${escapeHtml(p.discordId)}</td>
+            <td>
+              <a href="${escapeHtml(p.tiktokLink)}" target="_blank" class="btn btn-ghost" style="padding: 0.3rem 0.6rem; font-size: 0.75rem; border: 1px solid rgba(255,61,154,0.3);">
+                <i data-lucide="external-link" style="width:12px;height:12px;"></i> Cek TikTok
+              </a>
+            </td>
+            <td>
+              <select class="form-control status-select ${statusPillClass}" style="padding: 0.3rem; font-size: 0.8rem; background: rgba(0,0,0,0.7); height: auto;" onchange="updateStatus(${index}, this.value)">
+                <option value="Pending" ${p.status === 'Pending' ? 'selected' : ''}>⏳ Pending</option>
+                <option value="Lolos Verif" ${p.status === 'Lolos Verif' ? 'selected' : ''}>✅ Lolos Verif</option>
+                <option value="Utama" ${p.status === 'Utama' ? 'selected' : ''}>🌟 Utama</option>
+                <option value="Cadangan" ${p.status === 'Cadangan' ? 'selected' : ''}>🛡️ Cadangan</option>
+                <option value="DQ" ${p.status === 'DQ' ? 'selected' : ''}>❌ DQ</option>
+              </select>
+            </td>
+          </tr>
+        `}).join('');
+        lucide.createIcons();
+      }
+    }
+
+    function updateStatus(index, newStatus) {
+      let participants = JSON.parse(localStorage.getItem('gno_participants') || '[]');
+      if (participants[index]) {
+        participants[index].status = newStatus;
+        localStorage.setItem('gno_participants', JSON.stringify(participants));
+        loadDashboardData();
+      }
+    }
+
+    function exportJSON() {
+      const data = localStorage.getItem('gno_participants') || '[]';
+      const blob = new Blob([data], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'gno_participants.json';
+      a.click();
+    }
+
+    function clearData() {
+      if (confirm('Yakin ingin menghapus semua data pendaftaran? Tindakan ini tidak bisa di-undo.')) {
+        localStorage.removeItem('gno_participants');
+        loadDashboardData();
+      }
+    }
+
+    function escapeHtml(unsafe) {
+      if (!unsafe) return '';
+      return String(unsafe)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    const raffleBtn = document.getElementById('raffleBtn');
+    if(raffleBtn) {
+      raffleBtn.addEventListener('click', () => {
+        let participants = JSON.parse(localStorage.getItem('gno_participants') || '[]');
+        
+        // Count existing Utama
+        let existingUtamaCount = participants.filter(p => p.status === 'Utama').length;
+        if (existingUtamaCount >= 8) {
+          alert('Kuota Utama sudah penuh (8 orang). Silakan ubah status beberapa peserta terlebih dahulu jika ingin mengundi ulang.');
+          return;
+        }
+
+        // Only select those who passed verification
+        let eligible = participants.filter(p => p.status === 'Lolos Verif');
+        
+        if (eligible.length === 0) {
+          alert('Tidak ada peserta dengan status "Lolos Verif". Silakan ubah status peserta terlebih dahulu.');
+          return;
+        }
+
+        raffleBtn.disabled = true;
+        const original = raffleBtn.innerHTML;
+        raffleBtn.innerHTML = '<span class="font-mono">Mengundi...</span>';
+        
+        // Simulating animation delay
+        setTimeout(() => {
+          // Shuffle algorithm (Fisher-Yates)
+          let shuffled = [...eligible];
+          for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+          }
+
+          // Assign Utama (up to remaining slots) and Cadangan (rest)
+          let remainingUtamaSlots = 8 - existingUtamaCount;
+          let assignedUtama = 0;
+          
+          shuffled.forEach(p => {
+            // Find index in original array
+            const origIndex = participants.findIndex(orig => orig.timestamp === p.timestamp && orig.robloxId === p.robloxId);
+            
+            if (assignedUtama < remainingUtamaSlots) {
+              participants[origIndex].status = 'Utama';
+              assignedUtama++;
+            } else {
+              participants[origIndex].status = 'Cadangan';
+            }
+          });
+
+          localStorage.setItem('gno_participants', JSON.stringify(participants));
+          
+          raffleBtn.innerHTML = original;
+          raffleBtn.disabled = false;
+          
+          alert(`Undian Selesai!\n${assignedUtama} peserta berhasil mendapatkan slot Utama.`);
+          loadDashboardData();
+        }, 1500);
+      });
+    }
+  </script>
+</body>
+</html>

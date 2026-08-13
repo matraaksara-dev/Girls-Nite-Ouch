@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Rules - Girls Nite Ouch! 1v1 Dueling Ground</title>
+  
+  <meta name="theme-color" content="#1C0F3D">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Lilita+One&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <canvas id="nebula-bg"></canvas>
+
+  <!-- ========== NAV ========== -->
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" aria-label="Kembali ke Beranda">
+        <img src="assets/logo-black-mamba.png" alt="Black Mamba Logo" class="logo-img">
+        <span class="font-display logo-text" style="font-size: 1rem;">KEMBALI</span>
+      </a>
+
+      <div class="nav-badge font-mono">
+        <i data-lucide="scroll" style="width:14px;height:14px;"></i> RULES & REGULASI
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="section container reveal" id="rules-content" style="padding-top: 5rem;">
+      <div style="text-align:center; margin-bottom: 2rem;">
+        <div class="icon-wrap" style="margin: 0 auto 1rem;"><i data-lucide="book-open" style="width:40px;height:40px;"></i></div>
+        <h1 class="font-event rules-title">BUKU REGULASI</h1>
+        <h2 class="font-display" style="font-size: 1.2rem; color: var(--ghost-white);">GIRLS NITE OUCH! — DUELING GROUND (1v1)</h2>
+      </div>
+
+      <div class="rules-container">
+        <!-- Bab I -->
+        <div class="glass-card rules-card">
+          <div class="rules-header">
+            <i data-lucide="calendar-clock"></i>
+            <h3 class="font-display">I. Jadwal Resmi & Timeline Utama</h3>
+          </div>
+          <div class="rules-body">
+            <div class="rules-table-container">
+              <table class="rules-table">
+                <thead>
+                  <tr>
+                    <th>Tahapan Turnamen</th>
+                    <th>Waktu & Tanggal</th>
+                    <th>Keterangan</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Pendaftaran Dibuka</strong></td>
+                    <td class="font-mono text-gold">12 Agt 2026 (21.00 WIB)</td>
+                    <td>Pendaftaran resmi dibuka untuk umum.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Pendaftaran Ditutup</strong></td>
+                    <td class="font-mono text-gold">14 Agt 2026 (20.00 WIB)</td>
+                    <td>Durasi pendaftaran ditutup.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Pengundian & Pengumuman</strong></td>
+                    <td class="font-mono text-gold">14 Agt 2026 (21.00 WIB)</td>
+                    <td>Pengumuman 8 Peserta Utama (+ Cadangan).</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Technical Meeting (TM)</strong></td>
+                    <td class="font-mono text-gold">14 - 15 Agt 2026</td>
+                    <td>Wajib hadir di Server Discord BMA.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Match Day (Turnamen)</strong></td>
+                    <td class="font-mono text-gold">15 Agt 2026 (21.00 WIB - Selesai)</td>
+                    <td>Pelaksanaan pertandingan hingga selesai.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bab II -->
+        <div class="glass-card rules-card">
+          <div class="rules-header">
+            <i data-lucide="shield-check"></i>
+            <h3 class="font-display">II. Syarat Peserta & Verifikasi Anti-Hode</h3>
+          </div>
+          <div class="rules-body">
+            <ul class="rules-bullets rules-list">
+              <li>
+                <strong>Format Peserta:</strong> Turnamen ini bersifat <strong>Perorangan / Solo (1v1)</strong> dengan kapasitas maksimal 8 player utama.
+              </li>
+              <li>
+                <strong>Khusus Player Wanita (Anti-Hode):</strong>
+                <ul>
+                  <li>Seluruh peserta terpilih <strong>WAJIB</strong> melakukan verifikasi Voice Call (VC) di Server Discord BMA.</li>
+                  <li>Dilarang keras menggunakan soundboard, voice changer, atau diwakilkan player pria.</li>
+                  <li>Jika ditemukan indikasi Hode atau menolak VC, peserta <strong>DIDISKUALIFIKASI SPONTAN</strong>.</li>
+                </ul>
+              </li>
+              <li>
+                <strong>Akun Game:</strong> Wajib menggunakan akun pribadi terdaftar. Dilarang mengganti ID Game.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Bab III -->
+        <div class="glass-card rules-card">
+          <div class="rules-header">
+            <i data-lucide="dices"></i>
+            <h3 class="font-display">III. Sistem Seleksi & TM</h3>
+          </div>
+          <div class="rules-body">
+            <ul class="rules-bullets rules-list">
+              <li>
+                <strong>Sistem Pengundian:</strong> Jika melebihi kuota 8 orang, 8 peserta utama & cadangan ditentukan lewat undian acak.
+              </li>
+              <li>
+                <strong>Kewajiban Join Discord:</strong> 
+                <ul>
+                  <li>Peserta lolos wajib bergabung ke Discord Black Mamba Arena untuk TM.</li>
+                  <li>Peserta yang tidak hadir di Discord BMA hingga batas TM dianggap <strong>Gugur (WO)</strong>.</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Bab IV -->
+        <div class="glass-card rules-card">
+          <div class="rules-header">
+            <i data-lucide="swords"></i>
+            <h3 class="font-display">IV. Aturan Pertandingan (Match Rules)</h3>
+          </div>
+          <div class="rules-body">
+            <ul class="rules-bullets rules-list">
+              <li><strong>Mode & Map:</strong> Dueling Ground (1v1 Arena Duel).</li>
+              <li>
+                <strong>Restriksi Senjata (Banned Weapon):</strong>
+                <ul>
+                  <li>Sesuai hasil voting tertinggi di Discord BMA.</li>
+                  <li>Sanksi Pelanggaran: Menggunakan senjata BAN = <strong>LANGSUNG DIDISKUALIFIKASI (Auto Lose)</strong> ronde tersebut.</li>
+                </ul>
+              </li>
+              <li><strong>Sistem Kompetisi:</strong> Single Elimination (Sistem Gugur).</li>
+              <li>
+                <strong>Ketepatan Waktu:</strong>
+                <ul>
+                  <li>Wajib standby di lobby 10 menit sebelum jadwal.</li>
+                  <li>Toleransi keterlambatan <strong>5 menit</strong> = Diskualifikasi (WO).</li>
+                </ul>
+              </li>
+              <li>
+                <strong>Akses Room Pertandingan (PENTING!):</strong>
+                <ul>
+                  <li><strong>Dilarang keras</strong> masuk room pertandingan sebelum mendapat <em>invite</em> resmi dari Host/Panitia.</li>
+                  <li>Masuk lebih awal tanpa izin = <strong>Peringatan tertulis</strong>.</li>
+                  <li>Jika mengganggu persiapan (salah pencet start, mengubah setting, dsb), sanksi <strong>Diskualifikasi (DQ)</strong> berlaku mutlak.</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Bab V -->
+        <div class="glass-card rules-card">
+          <div class="rules-header">
+            <i data-lucide="wifi-off"></i>
+            <h3 class="font-display">V. Ketentuan Teknis & Diskoneksi</h3>
+          </div>
+          <div class="rules-body">
+            <ul class="rules-bullets rules-list">
+              <li><strong>Koneksi & Device:</strong> Tanggung jawab penuh peserta (lag, baterai, provider).</li>
+              <li>
+                <strong>Rematch (Ulang Match):</strong>
+                <ul>
+                  <li>Hanya jika kegagalan server/glitch fatal pada <strong>30 detik pertama</strong> sebelum first blood.</li>
+                  <li>Terputus koneksi pribadi setelah berjalan = <strong>TIDAK RE-HOST</strong>.</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Bab VI -->
+        <div class="glass-card rules-card">
+          <div class="rules-header">
+            <i data-lucide="scale"></i>
+            <h3 class="font-display">VI. Sportivitas & Etika</h3>
+          </div>
+          <div class="rules-body">
+            <ul class="rules-bullets rules-list">
+              <li><strong>Perilaku Dilarang:</strong> Dilarang cheat, bug abuse, toxic behavior, SARA di in-game maupun Discord.</li>
+              <li><strong>Keputusan Panitia:</strong> Bersifat <strong>MUTLAK</strong> dan tidak dapat diganggu gugat.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 3rem;">
+        <a href="index.html#form-demo" class="btn btn-primary" style="min-width: 200px; font-size: 1.1rem; padding: 0.75rem 2rem; display: inline-flex; align-items: center; justify-content: center;">
+          <i data-lucide="check-circle" style="width: 20px; height: 20px; margin-right: 8px;"></i>
+          SAYA PAHAM, DAFTAR SEKARANG
+        </a>
+      </div>
+
+    </section>
+
+    <footer style="text-align:center;padding:2.5rem 1rem 5rem;color:var(--muted-lilac);font-size:0.8rem;">
+      <div class="footer-logos">
+        <img src="assets/logo-bm-arena.png" alt="Black Mamba Arena" class="footer-logo">
+        <img src="assets/logo-sponsor.png" alt="Sponsor" class="footer-logo">
+      </div>
+      <p class="font-mono">Copyright by: Black Mamba Community</p>
+    </footer>
+  </main>
+
+  <script src="js/prototype.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
