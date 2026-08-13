@@ -106,6 +106,11 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/app.js"></script>
   <script>
+    // --- Supabase Client (admin scope) ---
+    const SUPABASE_URL = 'https://kfvkmksksbignydwlawe.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_yG1jjzbaVC6soXhwLLb-uw_XA3pxC13';
+    const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
     // --- Login Gate Logic ---
     const correctPasscode = 'MAMBA2026';
     
@@ -134,19 +139,15 @@
 
     // --- Dashboard Logic ---
     async function loadDashboardData() {
+      let participants = [];
+
       try {
-        let participants = [];
-        if (typeof supabase !== 'undefined' && supabase) {
-          const { data, error } = await supabase.from('participants').select('*').order('registeredAt', { ascending: true });
-          if (error) {
-             console.error("Supabase Error:", error);
-             document.getElementById('kpiContainer').innerHTML = `<div style="color:red; padding:1rem; background:rgba(255,0,0,0.1); border:1px solid red;">Supabase Error: ${error.message}</div>`;
-             return;
-          }
-          if (data) participants = data;
-        } else {
-          participants = JSON.parse(localStorage.getItem('gno_participants') || '[]');
-        }
+        const { data, error } = await db.from('participants').select('*').order('registeredAt', { ascending: true });
+        if (!error && data) participants = data;
+      } catch (e) {
+        console.warn('Supabase fetch error:', e);
+      }
+
       
       const kpiContainer = document.getElementById('kpiContainer');
       const tableBody = document.getElementById('participantsTableBody');
@@ -213,40 +214,20 @@
         `}).join('');
         if (window.lucide) lucide.createIcons();
       }
-      } catch (err) {
-        document.getElementById('kpiContainer').innerHTML = `<div style="color:red; padding:1rem; background:rgba(255,0,0,0.1); border:1px solid red;">JS Error: ${err.message}</div>`;
-        console.error(err);
-      }
     }
 
-    async function updateStatus(id, newStatus, index) {
-      if (supabase) {
-        // Optimistic UI update could be done here, but we'll wait for db
-        const { error } = await supabase.from('participants').update({ status: newStatus }).eq('id', id);
-        if (error) {
-          alert('Gagal update status!');
-          console.error(error);
-        }
-        loadDashboardData();
-      } else {
-        let participants = JSON.parse(localStorage.getItem('gno_participants') || '[]');
-        if (participants[index]) {
-          participants[index].status = newStatus;
-          localStorage.setItem('gno_participants', JSON.stringify(participants));
-          loadDashboardData();
-        }
+    async function updateStatus(id, newStatus) {
+      const { error } = await db.from('participants').update({ status: newStatus }).eq('id', id);
+      if (error) {
+        alert('Gagal update status!');
+        console.error(error);
       }
+      loadDashboardData();
     }
 
     async function exportJSON() {
-      let dataStr = '';
-      if (supabase) {
-        const { data } = await supabase.from('participants').select('*');
-        dataStr = JSON.stringify(data || []);
-      } else {
-        dataStr = localStorage.getItem('gno_participants') || '[]';
-      }
-      const blob = new Blob([dataStr], { type: 'application/json' });
+      const { data } = await db.from('participants').select('*');
+      const blob = new Blob([JSON.stringify(data || [], null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -256,13 +237,8 @@
 
     async function clearData() {
       if (confirm('Yakin ingin menghapus semua data pendaftaran? Tindakan ini tidak bisa di-undo.')) {
-        if (supabase) {
-          // Note: Delete without eq doesn't work if RLS prevents it. We will try to delete all.
-          const { error } = await supabase.from('participants').delete().neq('id', '0');
-          if (error) alert('Gagal menghapus data.');
-        } else {
-          localStorage.removeItem('gno_participants');
-        }
+        const { error } = await db.from('participants').delete().neq('id', '0');
+        if (error) alert('Gagal menghapus data: ' + error.message);
         loadDashboardData();
       }
     }
@@ -280,13 +256,8 @@
     const raffleBtn = document.getElementById('raffleBtn');
     if(raffleBtn) {
       raffleBtn.addEventListener('click', async () => {
-        let participants = [];
-        if (supabase) {
-          const { data } = await supabase.from('participants').select('*');
-          participants = data || [];
-        } else {
-          participants = JSON.parse(localStorage.getItem('gno_participants') || '[]');
-        }
+        const { data } = await db.from('participants').select('*');
+        let participants = data || [];
         
         // Count existing Utama
         let existingUtamaCount = participants.filter(p => p.status === 'Utama').length;
@@ -332,18 +303,8 @@
             updates.push(p);
           });
 
-          if (supabase) {
-            // Supabase doesn't easily support bulk update by default unless via rpc or upsert.
-            // For this scale (max ~50 users), we can do an upsert if id is present.
-            const { error } = await supabase.from('participants').upsert(updates);
-            if (error) console.error(error);
-          } else {
-            updates.forEach(u => {
-               const idx = participants.findIndex(orig => orig.id === u.id);
-               if (idx >= 0) participants[idx].status = u.status;
-            });
-            localStorage.setItem('gno_participants', JSON.stringify(participants));
-          }
+          const { error } = await db.from('participants').upsert(updates);
+          if (error) console.error(error);
           
           raffleBtn.innerHTML = original;
           raffleBtn.disabled = false;
