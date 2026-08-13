@@ -3,6 +3,11 @@
    ========================================================= */
 const TARGET_DATE = new Date('2026-08-14T20:00:00+07:00').getTime();
 
+// --- Supabase Config ---
+const SUPABASE_URL = 'https://kfvkmksksbignydwlawe.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_yG1jjzbaVC6soXhwLLb-uw_XA3pxC13';
+const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
 /* ---------- Nebula particle background ---------- */
 function initNebulaBg() {
   const canvas = document.getElementById('nebula-bg');
@@ -264,25 +269,50 @@ function initForm() {
 
     if (!valid) return;
 
-    // Save to localStorage
+    // Show loading state
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalBtnContent = submitBtn.innerHTML;
+    submitBtn.innerHTML = 'Sending...';
+    submitBtn.disabled = true;
+
+    // Save to Supabase
     const newEntry = {
+      id: Date.now().toString(), // Using timestamp as simple unique ID
       robloxUsername: form.elements['robloxUsername'].value,
       robloxId: form.elements['robloxId'].value,
       discordId: form.elements['discordId'].value,
       tiktokLink: form.elements['tiktokLink'].value,
-      status: 'Pending',
-      timestamp: Date.now()
+      status: 'Pending'
     };
     
-    let participants = JSON.parse(localStorage.getItem('gno_participants') || '[]');
-    participants.push(newEntry);
-    localStorage.setItem('gno_participants', JSON.stringify(participants));
+    if (supabase) {
+      supabase.from('participants').insert([newEntry]).then(({ error }) => {
+        submitBtn.innerHTML = originalBtnContent;
+        submitBtn.disabled = false;
+        
+        if (error) {
+          console.error(error);
+          alert('Gagal mengirim data. Silakan coba lagi.');
+          return;
+        }
 
-    updateSlotCount();
-
-    document.getElementById('successModal').classList.add('active');
-    fireConfetti();
-    form.reset();
+        updateSlotCount();
+        document.getElementById('successModal').classList.add('active');
+        fireConfetti();
+        form.reset();
+      });
+    } else {
+      // Fallback local if supabase fails to load
+      let participants = JSON.parse(localStorage.getItem('gno_participants') || '[]');
+      participants.push({...newEntry, timestamp: Date.now()});
+      localStorage.setItem('gno_participants', JSON.stringify(participants));
+      submitBtn.innerHTML = originalBtnContent;
+      submitBtn.disabled = false;
+      updateSlotCount();
+      document.getElementById('successModal').classList.add('active');
+      fireConfetti();
+      form.reset();
+    }
   });
 
   form.querySelectorAll('.form-control').forEach((input) => {
@@ -293,9 +323,16 @@ function initForm() {
   });
 }
 
-function updateSlotCount() {
-  const participants = JSON.parse(localStorage.getItem('gno_participants') || '[]');
-  const count = participants.length;
+async function updateSlotCount() {
+  let count = 0;
+  if (supabase) {
+    const { count: sbCount, error } = await supabase.from('participants').select('*', { count: 'exact', head: true });
+    if (!error) count = sbCount;
+  } else {
+    const participants = JSON.parse(localStorage.getItem('gno_participants') || '[]');
+    count = participants.length;
+  }
+  
   const maxSlots = 8;
   
   const slotText = document.getElementById('slotCount');
