@@ -1,8 +1,7 @@
 /* =========================================================
    Nebula Arena — Interactions
    ========================================================= */
-
-const TARGET_DATE = new Date('2026-08-13T21:00:00+07:00').getTime();
+const TARGET_DATE = new Date('2026-08-14T20:00:00+07:00').getTime();
 
 /* ---------- Nebula particle background ---------- */
 function initNebulaBg() {
